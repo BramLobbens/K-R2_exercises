@@ -13,11 +13,17 @@ main()
     char dec[MAXLINE]; /* decimal output line */
     
     while ((len = getline(hex, MAXLINE)) > 0)
-        if (len > 1) {
+    {
+        if (len > 1)
+        {
             printf("%d\n", htoi(hex));
-        } else { 
+        }
+        else
+        {
             printf("%s\n", "");
         }
+    }
+    
     return 0;
 }
 
@@ -39,6 +45,7 @@ int htoi(char s[])
             n = 16 * n + ((tolower(s[i]) - 'a') + 10);
         }
     }
+    
     return n;
 }
 
@@ -48,11 +55,15 @@ int getline(char s[], int lim)
     int c, i;
     
     for (i=0; i<lim-1 && (c=getchar()) != EOF && c != '\n'; ++i)
+    {
         s[i] = c;
-    if (c == '\n') {
+    }
+    if (c == '\n')
+    {
         s[i] = c;
         ++i;
     }
     s[i] = '\0';
+    
     return i;
 }
