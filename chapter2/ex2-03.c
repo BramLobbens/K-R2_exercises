@@ -34,12 +34,19 @@ int htoi(char s[])
     
     n = 0;
     for (i = 0; isdigit(s[i]) ||
-    (tolower(s[i]) >= 'a' && tolower(s[i]) <= 'f'); ++i)
+    (tolower(s[i]) >= 'a' && tolower(s[i]) <= 'x'); ++i)
     {
-        if isdigit(s[i])
+        /* ignore initial 0x values */
+        if ((s[i] == '0' && i == 0) || (tolower(s[i]) == 'x' && i == 1))
+        {
+            n = 0; 
+        }
+        /* 0-9 base 16 */
+        else if isdigit(s[i])
         {
             n = 16 * n + (s[i] - '0');
         }
+        /* a-f base 16 */
         else if (tolower(s[i]) >= 'a' && tolower(s[i]) <= 'f')
         {
             n = 16 * n + ((tolower(s[i]) - 'a') + 10);
