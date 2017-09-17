@@ -1,26 +1,26 @@
 #include <stdio.h>
 #include <ctype.h>
 
-#define MAXLINE 1000
+#define MAXLEN 18 /* max input: 0x7fffffffffffffff */
 
-int htoi(char line[]);
+long htoi(char line[]);
 int getline(char line[], int maxline);
 
 main()
 {
-    int len; /* current line length */
-    char hex[MAXLINE]; /* hexadecimal input line */
-    char dec[MAXLINE]; /* decimal output line */
+    int len, i; /* current line length */
+    char hexvalue[MAXLEN+1]; /* hexadecimal input line + /0 term. */
     
-    while ((len = getline(hex, MAXLINE)) > 0)
+    while ((len = getline(hexvalue, MAXLEN+1)) > 0)
     {
         if (len > 1)
         {
-            printf("%d\n", htoi(hex));
+            printf("%ld\n", htoi(hexvalue));
         }
-        else
+        
+        for (i = 0; i < MAXLEN+1; ++i)
         {
-            printf("%s\n", "");
+            hexvalue[i] = ' ';
         }
     }
     
@@ -28,21 +28,24 @@ main()
 }
 
 /* htoi: convert s (string of hexadecimal digits) to integer */
-int htoi(char s[])
+long htoi(char s[])
 {
-    int i, n;
+    int i, j; 
+    long n;
+    
+    j = 0;
+    /* skip past 0x value */
+    if (s[0] == '0' && tolower(s[1]) == 'x')
+    {
+        j = 2;
+    }
     
     n = 0;
-    for (i = 0; isdigit(s[i]) ||
-    (tolower(s[i]) >= 'a' && tolower(s[i]) <= 'x'); ++i)
+    for (i = j; isdigit(s[i]) ||
+        (tolower(s[i]) >= 'a' && tolower(s[i]) <= 'f'); ++i)
     {
-        /* ignore initial 0x values */
-        if ((s[i] == '0' && i == 0) || (tolower(s[i]) == 'x' && i == 1))
-        {
-            n = 0; 
-        }
         /* 0-9 base 16 */
-        else if isdigit(s[i])
+        if isdigit(s[i])
         {
             n = 16 * n + (s[i] - '0');
         }
@@ -63,14 +66,9 @@ int getline(char s[], int lim)
     
     for (i = 0; i < lim-1 && (c = getchar()) != EOF && c != '\n'; ++i)
     {
-        s[i] = c;
+         s[i] = c;
     }
-    if (c == '\n')
-    {
-        s[i] = c;
-        ++i;
-    }
-    s[i] = '\0';
+    s[++i] = '\0';
     
     return i;
 }
