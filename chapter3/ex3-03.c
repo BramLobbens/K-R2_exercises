@@ -1,5 +1,3 @@
-/* buggy: to fix */
-
 #include <stdio.h>
 
 #define MAXLINE 1000
@@ -21,36 +19,32 @@ main()
 void expand(char from[], char to[])
 {
     int i, j, k;
-    int start, end, flag, d;
-    flag = 0;
+
     for (i = j = 0; i < MAXLINE - 1 && from[i] != '\n'; ++i)
     {
         if (from[i] == '-' && i == 0) /* check for leading dash */
         {
             to[j++] = from[i];
         }
-        else if (tolower(from[i]) >= 'a' && tolower(from[i]) <= 'z')
+        else if ((tolower(from[i]) >= 'a' && tolower(from[i]) <= 'z') \
+        || (from[i] >= '0' && from[i] <= '9'))
         {
-            if (from[i] == to[j - 1])
+            for (k = 0; k <=  from[i + 2] - from[i]; ++k)
             {
-                start = from[j];
-                end = from[i];
-                i += 2;
-            }
-            else
-            {
-                start = from[i];
-                end = from[i + 2];
-            }
-            for (k = 0; k <=  end - start; ++k)
-            {
-                to[j++] = from[i] + k;
+                if (to[j-1] == from[i] + k)
+                {
+                    ; /* ignore repeating occurences */
+                }
+                else
+                {
+                    to[j++] = from[i] + k;
+                }
             }
         }
     }
-    if (from[i - 2] == '-') /* check for trailing dash */
+    if (from[i - 1] == '-') /* check for trailing dash */
     {
-        to[j++] = '-';
+        to[j++] = from[i - 1];
     }
     to[j++] = '\n';
     to[j] = '\0';
