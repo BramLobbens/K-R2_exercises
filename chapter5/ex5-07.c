@@ -2,10 +2,13 @@
 #include <string.h>
 
 #define MAXLINES 5000
+#define MAXLEN 1000
 
 char *lineptr[MAXLINES];
+char lines[MAXLINES][MAXLEN];
 
 int readlines(char *lineptr[], int nlines);
+int readlines2(char lines[][MAXLEN], int nlines);
 void writelines(char *lineptr[], int nlines);
 void qsort(char *lineptr[], int left, int right);
 
@@ -27,8 +30,6 @@ int main()
     }
 }
 
-#define MAXLEN 1000
-
 int getline(char *, int);
 char *alloc(int);
 
@@ -37,7 +38,7 @@ int readlines(char *lineptr[], int maxlines)
 {
     int len, nlines;
     char *p, line[MAXLEN];
-
+            
     nlines = 0;
     while ((len = getline(line, MAXLEN)) > 0)
     {
@@ -51,6 +52,21 @@ int readlines(char *lineptr[], int maxlines)
 	    strcpy(p, line);
 	    lineptr[nlines++] = p;
 	}
+    }
+    return nlines;
+}
+
+int readlines2(char lines[][MAXLEN], int maxlines)
+{
+    int len, nlines;
+
+    nlines = 0;
+    while ((len = getline(lines[nlines], MAXLEN)) > 0)
+    {
+	if (nlines >= maxlines)
+	    return -1;
+	else
+	    lines[nlines++][len-1] = '\0';
     }
     return nlines;
 }
