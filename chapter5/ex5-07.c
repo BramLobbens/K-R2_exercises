@@ -1,3 +1,5 @@
+/* K&R2 exercise 5-7, page 110 */
+
 #include <stdio.h>
 #include <string.h>
 
@@ -16,7 +18,7 @@ void qsort(char *lineptr[], int left, int right);
 int main()
 {
     int nlines;
-
+    
     if ((nlines = readlines(lineptr, MAXLINES)) >= 0)
     {
 	qsort(lineptr, 0, nlines-1);
