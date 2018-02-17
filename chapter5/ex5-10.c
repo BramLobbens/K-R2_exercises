@@ -4,11 +4,9 @@
  */
 
 #include <stdio.h>
-#include <stdlib.h> /* atof() */
-#include <ctype.h> /* isdigit() */
+#include <stdlib.h> /* strtol() */
 
 #define MAXOP 100 /* max size of operand or operator */
-#define NUMBER '0' /* signal that a number was found */
 #define MAXVAL 100 /* maximum depth of the val stack */
 
 int sp = 0; /* next free stack position */
